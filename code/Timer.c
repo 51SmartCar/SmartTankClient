@@ -1,8 +1,12 @@
 #include "Timer.h"
 #include "Public.h"
 #include "Delay.h"
-sbit Servo    =  P4 ^ 5;             	//舵机转向控制 定时器0的时钟输出口
-sbit MOTORPWM =  P1 ^ 4;           		// 控制电机PWM 转速
+//sbit Servo    =  P4 ^ 5;             	//舵机转向控制 定时器0的时钟输出口
+
+// 控制电机PWM 转速
+sbit RIGHT_MOTORENB =  P1 ^ 2;        // RIGHT ENB
+sbit LEFT_MOTORENA =  P1 ^ 5;      		// LEFT ENA
+
 
 //IO口设置
 #define     ECHO_IO     P00                                         //ECHO接P1.0
@@ -14,7 +18,8 @@ unsigned int MOTORDUTY = 0X4366;
 
 void InitMoter(void){
 
-		MOTORPWM = 0;
+		RIGHT_MOTORENB = 0;
+		LEFT_MOTORENA = 0;
 }
 
 
@@ -52,12 +57,15 @@ void Timer0_interrupt() interrupt 1
 		{
 				case 1:
 				{
-					Servo = 1;
+				
+//					RIGHT_MOTORENB = 1;
+//					LEFT_MOTORENA = 1;
 					Timer0_Update(PWMHEIGHT);
 				}  break;
 				case 2:
 				{
-					Servo=0;     //	pwm1变低 
+//					RIGHT_MOTORENB = 0;
+//					LEFT_MOTORENA = 0;    //	pwm1变低 
 					Timer0_Update(0x6BFF - PWMHEIGHT);
 				}  break;
 				case 3:
@@ -189,12 +197,14 @@ void Timer1_interrupt (void) interrupt 3 using 1    //周期为10ms
 		{
 				case 1:
 				{
-					MOTORPWM =1;
+					RIGHT_MOTORENB = 1;
+					LEFT_MOTORENA = 1;
 					Timer1_Update(MOTORDUTY);
 				}  break;
 				case 2:
 				{
-					MOTORPWM = 0;
+					RIGHT_MOTORENB = 0;
+					LEFT_MOTORENA = 0;
 					Timer1_Update(0xD7FF - MOTORDUTY);
 				}  break;
 				case 3:

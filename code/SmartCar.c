@@ -98,18 +98,18 @@ void VehicleAutoDriver(void){
 }
 
 
-///紧急制动
-void VehicleDiagnosis(unsigned int distance, unsigned char level){
-	
-	if( 1 == Motor_CurrentStatus() ){
+/////紧急制动
+//void VehicleDiagnosis(unsigned int distance, unsigned char level){
+//	
+//	if( 1 == Motor_CurrentStatus() ){
 
-			if( distance <= (20 + 5*(float)level) ){
-				Motor_Actions_Status(0,0);
-				Motor_Level = 1;
-			}
-	}
-	
-}
+//			if( distance <= (20 + 5*(float)level) ){
+//				Motor_Actions_Status(0,0);
+//				Motor_Level = 1;
+//			}
+//	}
+//	
+//}
 
 
 void Device_Init(void) {
@@ -123,8 +123,8 @@ void Device_Init(void) {
 		P6M1 = 0;	P6M0 = 0;	//设置为准双向口
 		P7M1 = 0;	P7M0 = 0;	//设置为准双向口
 		
-		P1M1 &= ~(0x18);	  //P1.4 P1.3 设置为推挽输出
-		P1M0 |=  (0x18);
+		P1M1 &= ~(0xD8);	  //P1.4 P1.3 设置为推挽输出    P1.6 P1.7 
+		P1M0 |=  (0xD8);
 		P4M1 &= ~(0x20);
 		P4M0 |=  (0x20);
 		
@@ -242,7 +242,14 @@ void ResponseData(unsigned char *RES_DATA) {
 							
 							if(RES_DATA[3] == 0x00 || RES_DATA[4] == 0x00 ){//居中
 									PWMHEIGHT = 0X40CC;
+									
+									Motor_Turn_Status(0,0);//停止
 								}else if(RES_DATA[3] == 0x02){//左转
+									DELAY_MS(120);											
+									Motor_Turn_Status(0,1);
+	/*注：在进行正反转切换的时候最好先刹车0.1S以上再反转，否则有可能损坏驱动器。
+	在PWM为100%时，如果要切换电机方向，必须先刹车0.1S以上再给反转信号。*/
+	
 								if(RES_DATA[4] == 0x01){
 									PWMHEIGHT = 0X3998;
 								}else if(RES_DATA[4] == 0x02){
@@ -251,6 +258,10 @@ void ResponseData(unsigned char *RES_DATA) {
 									PWMHEIGHT = 0X3432;
 								}
 							}else if(RES_DATA[3] == 0x01){//右转
+								DELAY_MS(120);
+								Motor_Turn_Status(1,0);
+	/*注：在进行正反转切换的时候最好先刹车0.1S以上再反转，否则有可能损坏驱动器。
+	在PWM为100%时，如果要切换电机方向，必须先刹车0.1S以上再给反转信号。*/
 								if(RES_DATA[4] == 0x01){
 									PWMHEIGHT = 0X47FE;
 								}else if(RES_DATA[4] == 0x02){
