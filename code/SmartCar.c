@@ -251,9 +251,9 @@ void ResponseData(unsigned char *RES_DATA) {
 	在PWM为100%时，如果要切换电机方向，必须先刹车0.1S以上再给反转信号。*/
 	
 								if(RES_DATA[4] == 0x01){
-									PWMHEIGHT = 0X3998;
+									PWMHEIGHT = 0X3432;
 								}else if(RES_DATA[4] == 0x02){
-									PWMHEIGHT = 0X3565;
+									PWMHEIGHT = 0X3432;
 								}else if(0x03 <= RES_DATA[4] ){
 									PWMHEIGHT = 0X3432;
 								}
@@ -263,11 +263,11 @@ void ResponseData(unsigned char *RES_DATA) {
 	/*注：在进行正反转切换的时候最好先刹车0.1S以上再反转，否则有可能损坏驱动器。
 	在PWM为100%时，如果要切换电机方向，必须先刹车0.1S以上再给反转信号。*/
 								if(RES_DATA[4] == 0x01){
-									PWMHEIGHT = 0X47FE;
+									PWMHEIGHT = 0X3432;
 								}else if(RES_DATA[4] == 0x02){
-									PWMHEIGHT = 0X4F31;
+									PWMHEIGHT = 0X3432;
 								}else if(0x03 <= RES_DATA[4] ){
-									PWMHEIGHT = 0X5065;
+									PWMHEIGHT = 0X3432;
 								}
 							}
 							

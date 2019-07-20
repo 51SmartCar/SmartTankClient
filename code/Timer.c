@@ -177,15 +177,15 @@ void Timer1_interrupt (void) interrupt 3 using 1    //ÖÜÆÚÎª10ms
 		{
 			case 1:
 				{
-					MOTORDUTY = 0X4366;
+					MOTORDUTY = 0x87FF;
 				}  break;
 				case 2:
 				{
-					MOTORDUTY = 0X5366;
+					MOTORDUTY = 0xB7FF;
 				}  break;
 				case 3:
 				{
-					MOTORDUTY= 0X6366;
+					MOTORDUTY= 0xD7FF;
 
 				}  break;
 				
